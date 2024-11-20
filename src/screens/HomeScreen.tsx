@@ -17,33 +17,65 @@ import {
   popularMovies,
   baseImagePath,
 } from '../api/apicalls';
-const {width, height} = Dimensions.get('window');
-const HomeScreen = () => {
-const [upcomingMoviesList, setupcomingMoviesList] = useState<any>(undefined);
-const [nowPlayingMoviesList, setnowPlayingMoviesList] = useState<any>(undefined);
-const [popularMoviesList, setpopularMoviesList] = useState<any>(undefined);
-if (!upcomingMoviesList || !nowPlayingMoviesList || !popularMoviesList) {
+import InputHeader from '../components/InputHeader';
 
-  return (   
-     <ScrollView
+const {width, height} = Dimensions.get('window');
+
+const getNowPlayingMoviesList = async () => {
+};
+
+const getUpcomingMoviesList = async () => {
+};
+
+const getPopularMoviesList = async () => {
+
+};
+
+const HomeScreen = ({navigation}: any) => {
+  const [nowPlayingMoviesList, setNowPlayingMoviesList] = useState<any>(undefined);
+  const [popularMoviesList, setPopularMoviesList] = useState<any>(undefined);
+  const [upcomingMoviesList, setUpcomingMoviesList] = useState<any>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      let tempNowPlaying = await getNowPlayingMoviesList();
+    })();
+  }, []);
+
+  const searchMoviesFunction = () => {
+    navigation.navigate('Search');
+  };
+
+  if (
+    nowPlayingMoviesList == undefined &&
+    nowPlayingMoviesList == null &&
+    popularMoviesList == undefined &&
+    popularMoviesList == null &&
+    upcomingMoviesList == undefined &&
+    upcomingMoviesList == null
+  ) {
+    return (
+      <ScrollView
         style={styles.container}
         bounces={false}
         contentContainerStyle={styles.scrollViewContainer}>
         <StatusBar hidden />
-        <View>
+
+        <View style={styles.InputHeaderContainer}>
+          <InputHeader searchFunction={searchMoviesFunction} />
         </View>
+
         <View style={styles.loadingContainer}>
           <ActivityIndicator size={'large'} color={COLORS.Orange} />
         </View>
       </ScrollView>
+    );
+  }
 
-  );
-}
-return <View style={styles.container}></View>;
+};
 
-}; 
 const styles = StyleSheet.create({
-   container: {
+  container: {
     display: 'flex',
     backgroundColor: COLORS.Black,
   },
@@ -54,7 +86,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
-  }
+  },
+  InputHeaderContainer: {
+    marginHorizontal: SPACING.space_36,
+    marginTop: SPACING.space_28,
+  },
 });
-
 export default HomeScreen;

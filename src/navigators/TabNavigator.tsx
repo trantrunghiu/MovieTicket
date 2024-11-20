@@ -23,7 +23,7 @@ const TabNavigator = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingBottom: SPACING.space_15 * 2,
+          paddingBottom: SPACING.space_20 * 2,
         },
       }}>
       <Tab.Screen
