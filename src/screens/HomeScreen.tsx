@@ -19,6 +19,8 @@ import {
 } from '../api/apicalls';
 import InputHeader from '../components/InputHeader';
 import CategoryHeader from '../components/CategoryHeader';
+import SubMovieCard from '../components/SubMovieCard';
+import MovieCard from '../components/MovieCard';
 
 const {width, height} = Dimensions.get('window');
 
@@ -60,7 +62,11 @@ const HomeScreen = ({navigation}: any) => {
   useEffect(() => {
     (async () => {
       let tempNowPlaying = await getNowPlayingMoviesList();
-      setNowPlayingMoviesList(tempNowPlaying.results);
+      setNowPlayingMoviesList([
+        {id: 'dummy1'},
+        ...tempNowPlaying.results,
+        {id: 'dummy2'},
+      ]);
 
       let tempPopular = await getPopularMoviesList();
       setPopularMoviesList(tempPopular.results);
@@ -110,10 +116,47 @@ const HomeScreen = ({navigation}: any) => {
           <InputHeader searchFunction={searchMoviesFunction} />
         </View>
 
-        <CategoryHeader title = {'Now playing'}/>
-        <CategoryHeader title = {'Popular'}/>
-        <CategoryHeader title = {'Upcoming'}/>
+        <CategoryHeader title={'Now Playing'} />
+      <FlatList
+        data={nowPlayingMoviesList}
+        keyExtractor={(item: any) => item.id}
+        bounces={false}
+        snapToInterval={width * 0.6 + SPACING.space_36}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        decelerationRate={0}
+        contentContainerStyle={styles.containerGap36}
+        renderItem={({item, index}) => {
+          if (!item.original_title) {
+            return (
+              <View
+                style={{
+                  width: (width - (width * 0.6 + SPACING.space_36 * 2)) / 2,
+                }}></View>
+            );
+          }
+          return (
+            <MovieCard
+              shoudlMarginatedAtEnd={true}
+              cardFunction={() => {
+                navigation.push('MovieDetails', {movieid: item.id});
+              }}
+              cardWidth={width * 0.6}
+              isFirst={index == 0 ? true : false}
+              isLast={index == upcomingMoviesList?.length - 1 ? true : false}
+              title={item.original_title}
+              imagePath={baseImagePath('w780', item.poster_path)}
+              genre={item.genre_ids.slice(1, 4)}
+              vote_average={item.vote_average}
+              vote_count={item.vote_count}
+            />
+          );
+        }}
+      />
 
+        <CategoryHeader title = {'Popular'}/>
+
+        <CategoryHeader title = {'Upcoming'}/>
       </ScrollView>
     );
   
@@ -137,5 +180,8 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACING.space_36,
     marginTop: SPACING.space_28,
   },
+  containerGap36: {
+    gap: SPACING.space_36,
+  }
 });
 export default HomeScreen;
