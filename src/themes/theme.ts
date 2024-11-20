@@ -45,6 +45,12 @@ interface Color {
   WhiteRGBA15: string;
 }
 
+interface Gradient {
+  colors: string[];
+  start: { x: number; y: number };
+  end: { x: number; y: number };
+}
+
 export const COLORS: Color = {
   Black: '#000000',
   BlackRGB10: 'rgba(0,0,0,0.1)',
@@ -58,6 +64,10 @@ export const COLORS: Color = {
   WhiteRGBA50: 'rgba(255,255,255,0.50)',
   WhiteRGBA32: 'rgba(255,255,255,0.32)',
   WhiteRGBA15: 'rgba(255,255,255,0.15)',
+};
+
+// Định nghĩa gradient màu
+export const GRADIENTS = {
 };
 
 interface FontFamily {

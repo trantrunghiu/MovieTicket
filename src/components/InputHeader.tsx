@@ -14,6 +14,8 @@ import {
   SPACING,
 } from '../themes/theme';
 import CustomIcon from './CustomIcon';
+import { GRADIENTS } from '../themes/theme';
+import LinearGradient from 'react-native-linear-gradient';
 
 const InputHeader = (props: any) => {
   const [searchText, setSearchText] = useState<string>('');
@@ -26,6 +28,7 @@ const InputHeader = (props: any) => {
         placeholder="Search your Movies..."
         placeholderTextColor={COLORS.WhiteRGBA32}
       />
+      
       <TouchableOpacity
         style={styles.searchIcon}
         onPress={() => props.searchFunction(searchText)}>

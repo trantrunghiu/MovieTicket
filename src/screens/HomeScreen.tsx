@@ -23,7 +23,6 @@ import SubMovieCard from '../components/SubMovieCard';
 import MovieCard from '../components/MovieCard';
 
 const {width, height} = Dimensions.get('window');
-
 const getNowPlayingMoviesList = async () => {
   try {
     let response = await fetch(nowPlayingMovies);

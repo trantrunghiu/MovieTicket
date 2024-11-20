@@ -23,7 +23,7 @@ const TabNavigator = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingBottom: SPACING.space_20 * 2,
+          paddingBottom: SPACING.space_10 * 5,
         },
       }}>
       <Tab.Screen
@@ -121,7 +121,7 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   activeTabBackground: {
     backgroundColor: COLORS.Black,
-    borderRadius: SPACING.space_18 * 10,  // Đảm bảo vòng tròn có hình dạng đúng
+    borderRadius: SPACING.space_10 * 10,  // Đảm bảo vòng tròn có hình dạng đúng
     width: FONTSIZE.size_30 * 2,  // Điều chỉnh kích thước vòng tròn (tăng lên 1.5 lần kích thước biểu tượng)
     height: FONTSIZE.size_30 * 2,  // Tương tự cho chiều cao
     justifyContent: 'center',
