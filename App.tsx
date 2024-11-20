@@ -16,7 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
+import CustomIcon from './src/components/CustomIcon';
 import {
   Colors,
   DebugInstructions,
@@ -71,7 +71,7 @@ function App(): React.JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
+        <Header />  
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
