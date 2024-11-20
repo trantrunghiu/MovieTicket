@@ -183,6 +183,28 @@ const HomeScreen = ({navigation}: any) => {
           />
         )}
       />
+      <CategoryHeader title={'Upcoming'} />
+      <FlatList
+        data={upcomingMoviesList}
+        keyExtractor={(item: any) => item.id}
+        horizontal
+        bounces={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.containerGap36}
+        renderItem={({item, index}) => (
+          <SubMovieCard
+            shoudlMarginatedAtEnd={true}
+            cardFunction={() => {
+              navigation.push('MovieDetails', {movieid: item.id});
+            }}
+            cardWidth={width / 3}
+            isFirst={index == 0 ? true : false}
+            isLast={index == upcomingMoviesList?.length - 1 ? true : false}
+            title={item.original_title}
+            imagePath={baseImagePath('w342', item.poster_path)}
+          />
+        )}
+      />
     </ScrollView>
   );
 };
