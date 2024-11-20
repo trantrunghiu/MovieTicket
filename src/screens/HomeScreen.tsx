@@ -196,7 +196,7 @@ const HomeScreen = ({navigation}: any) => {
             cardFunction={() => {
               navigation.push('MovieDetails', {movieid: item.id});
             }}
-            cardWidth={width / 3}
+            cardWidth={width / 4}
             isFirst={index == 0 ? true : false}
             isLast={index == upcomingMoviesList?.length - 1 ? true : false}
             title={item.original_title}
