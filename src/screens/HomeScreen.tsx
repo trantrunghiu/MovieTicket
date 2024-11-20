@@ -18,17 +18,38 @@ import {
   baseImagePath,
 } from '../api/apicalls';
 import InputHeader from '../components/InputHeader';
+import CategoryHeader from '../components/CategoryHeader';
 
 const {width, height} = Dimensions.get('window');
 
 const getNowPlayingMoviesList = async () => {
+    try {
+        let response = await fetch(nowPlayingMovies);
+        let json = await response.json();
+        return json;
+    } catch (error) {
+        console.error("error in getNowPlayingMoviesList Function: ", error); 
+    }
 };
 
 const getUpcomingMoviesList = async () => {
+    try {
+        let response = await fetch(upcomingMovies);
+        let json = await response.json();
+        return json;
+    } catch (error) {
+        console.error("error in getUpcomingMoviesList Function: ", error); 
+    } 
 };
 
 const getPopularMoviesList = async () => {
-
+ try {
+        let response = await fetch(popularMovies);
+        let json = await response.json();
+        return json;
+    } catch (error) {
+        console.error("error in getPopularMoviesList Function: ", error); 
+    }
 };
 
 const HomeScreen = ({navigation}: any) => {
@@ -39,6 +60,13 @@ const HomeScreen = ({navigation}: any) => {
   useEffect(() => {
     (async () => {
       let tempNowPlaying = await getNowPlayingMoviesList();
+      setNowPlayingMoviesList(tempNowPlaying.results);
+
+      let tempPopular = await getPopularMoviesList();
+      setPopularMoviesList(tempPopular.results);
+
+      let tempUpcoming = await getUpcomingMoviesList();
+      setUpcomingMoviesList(tempUpcoming.results);
     })();
   }, []);
 
@@ -71,6 +99,24 @@ const HomeScreen = ({navigation}: any) => {
       </ScrollView>
     );
   }
+  return (
+      <ScrollView
+        style={styles.container}
+        bounces={false}
+        contentContainerStyle={styles.scrollViewContainer}>
+        <StatusBar hidden />
+
+        <View style={styles.InputHeaderContainer}>
+          <InputHeader searchFunction={searchMoviesFunction} />
+        </View>
+
+        <CategoryHeader title = {'Now playing'}/>
+        <CategoryHeader title = {'Popular'}/>
+        <CategoryHeader title = {'Upcoming'}/>
+
+      </ScrollView>
+    );
+  
 
 };
 
