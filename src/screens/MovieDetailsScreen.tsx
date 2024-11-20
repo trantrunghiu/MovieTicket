@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const MovieDetalsScreen = () => {
     return (
         <View style = {styles.container}>
-        <Text>Home Screen</Text>
+        <Text>Movie Detals Screen</Text>
         </View>
     );
     };

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const TicketScreen = () => {
     return (
         <View style = {styles.container}>
-        <Text>Home Screen</Text>
+        <Text>Ticket Screen</Text>
         </View>
     );
     };

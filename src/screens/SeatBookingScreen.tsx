@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const SeatBookingScreen = () => {
     return (
         <View style = {styles.container}>
-        <Text>Home Screen</Text>
+        <Text>Seat Booking Screen</Text>
         </View>
     );
     };
