@@ -80,6 +80,7 @@ interface FontFamily {
   poppins_regular: string;
   poppins_semibold: string;
   poppins_thin: string;
+  BebasNeue: string;
 }
 
 export const FONTFAMILY: FontFamily = {
@@ -92,6 +93,8 @@ export const FONTFAMILY: FontFamily = {
   poppins_regular: 'Poppins-Regular',
   poppins_semibold: 'Poppins-SemiBold',
   poppins_thin: 'Poppins-Thin',
+  BebasNeue: 'BebasNeue-Regular',
+
 };
 
 interface FontSize {
