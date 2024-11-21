@@ -31,7 +31,10 @@ const getMovieDetails = async (movieid: number) => {
     let json = await response.json();
     return json;
   } catch (error) {
-    console.error('Something Went wrong in getMoviesDetails Function', error);
+    console.error(
+      'Something Went wrong in getMovienavigationsDetails Function',
+      error,
+    );
   }
 };
 

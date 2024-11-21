@@ -58,7 +58,7 @@ const TabNavigator = () => {
               <View
                 style={[
                   styles.activeTabBackground,
-                  focused ? {backgroundColor: COLORS.Orange} : {},            
+                  focused ? {backgroundColor: COLORS.Orange} : {},
                 ]}>
                 <CustomIcon
                   name="search"
@@ -121,9 +121,9 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   activeTabBackground: {
     backgroundColor: COLORS.Black,
-    borderRadius: SPACING.space_10 * 10,  // Đảm bảo vòng tròn có hình dạng đúng
-    width: FONTSIZE.size_30 * 2,  // Điều chỉnh kích thước vòng tròn (tăng lên 1.5 lần kích thước biểu tượng)
-    height: FONTSIZE.size_30 * 2,  // Tương tự cho chiều cao
+    borderRadius: SPACING.space_10 * 10, // Đảm bảo vòng tròn có hình dạng đúng
+    width: FONTSIZE.size_30 * 2, // Điều chỉnh kích thước vòng tròn (tăng lên 1.5 lần kích thước biểu tượng)
+    height: FONTSIZE.size_30 * 2, // Tương tự cho chiều cao
     justifyContent: 'center',
     alignItems: 'center',
   },

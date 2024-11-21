@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './src/navigators/TabNavigator';
 import MovieDetailsScreen from './src/screens/MovieDetailsScreen';
 import SeatBookingScreen from './src/screens/SeatBookingScreen';
-
+import TicketScreen from './src/screens/TicketScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -24,6 +24,11 @@ const App = () => {
         <Stack.Screen
           name="SeatBooking"
           component={SeatBookingScreen}
+          options={{animation: 'slide_from_bottom'}}
+        />
+        <Stack.Screen
+          name="Ticket"
+          component={TicketScreen}
           options={{animation: 'slide_from_bottom'}}
         />
       </Stack.Navigator>
