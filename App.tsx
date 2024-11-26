@@ -8,14 +8,20 @@ import TicketScreen from './src/screens/TicketScreen';
 import SignInSignUpScreen from './src/screens/SignInSignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import OnBoarding from './src/screens/OnBoarding';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SignInSignUp"
+        initialRouteName="OnBoarding"
         screenOptions={{headerShown: false}}>
+        <Stack.Screen
+          name="OnBoarding"
+          component={OnBoarding}
+          options={{animation: 'fade'}}
+        />
         <Stack.Screen
           name="SignInSignUp"
           component={SignInSignUpScreen}
