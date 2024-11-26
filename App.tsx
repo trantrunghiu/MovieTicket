@@ -14,7 +14,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SignInSignUp" // Đặt Login là màn hình khởi đầu
+        initialRouteName="SignInSignUp"
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="SignInSignUp"
@@ -44,12 +44,12 @@ const App = () => {
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
-          options={{animation: 'slide_from_bottom'}}
+          options={{animation: 'slide_from_right'}}
         />
         <Stack.Screen
           name="SignUp"
           component={SignUpScreen}
-          options={{animation: 'slide_from_bottom'}}
+          options={{animation: 'slide_from_right'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

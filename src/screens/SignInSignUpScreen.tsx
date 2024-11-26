@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, Touchable, Button} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import {COLORS, FONTFAMILY, SPACING} from '../themes/theme';
 import {NavigationProp} from '@react-navigation/native';
 
@@ -15,12 +22,6 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
     <View style={styles.container}>
       <View style={styles.overlapWrapper}>
         <View style={styles.overlap}>
-          {/* Ellipses */}
-          <View style={[styles.ellipse, {top: 774, left: 15}]} />
-          <View style={[styles.div, {top: 0, left: 371}]} />
-          <View style={[styles.ellipse, {top: 774, left: 310}]} />
-          <View style={[styles.ellipse, {top: 778, left: 0}]} />
-
           {/* Images */}
           <Image
             style={[styles.image, {top: 67, left: 71}]}
@@ -82,9 +83,6 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
             style={[styles.image14, {top: 511, left: 386}]}
             source={require('../assets/image/image-20.png')}
           />
-
-          {/* Texts */}
-
           {/* Rectangle with Gradient */}
           <View style={styles.rectangle}>
             {/* Images */}
@@ -95,15 +93,14 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
               style={styles.logo}
               source={require('../assets/image/logo.png')} // Replace with your logo path
             />
-          </View>
+            {/* Text and Rectangles */}
+            <TouchableOpacity style={styles.SignInView} onPress={handleSignIn}>
+              <Text style={styles.TextButton}>SIGN IN</Text>
+            </TouchableOpacity>
 
-          {/* Text and Rectangles */}
-          <View style={styles.rectangle2}>
-            <Button title="Sign In" onPress={handleSignIn} />
-          </View>
-
-          <View style={styles.rectangle3}>
-            <Button title="Sign Up" onPress={handleSignUp} />
+            <TouchableOpacity style={styles.SignUpView} onPress={handleSignUp}>
+              <Text style={styles.TextButton}>SIGN UP</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -132,22 +129,6 @@ const styles = StyleSheet.create({
     top: -67,
     left: -71,
     backgroundColor: '#0e0e0e',
-  },
-  ellipse: {
-    position: 'absolute',
-    width: 186,
-    height: 186,
-    backgroundColor: '#6c47dbb2',
-    borderRadius: 93,
-    filter: 'blur(300px)',
-  },
-  div: {
-    position: 'absolute',
-    width: 186,
-    height: 186,
-    backgroundColor: '#6c47dbb2',
-    borderRadius: 93,
-    filter: 'blur(300px)',
   },
   image: {
     width: 77,
@@ -248,77 +229,44 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(1, 1, 1, 0.9)',
     borderRadius: 13,
   },
-  rectangle2: {
-    position: 'absolute',
-    width: 351,
-    height: 57,
-    top: 696,
-    left: 92,
+  SignInView: {
+    width: 300,
+    height: 50,
+    top: 600,
+    left: 47,
     backgroundColor: COLORS.Orange,
     borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', // Căn giữa theo chiều dọc
+    alignItems: 'center', // Căn giữa theo chiều ngang
   },
-  rectangle3: {
+  SignUpView: {
+    width: 300,
+    height: 50,
     position: 'absolute',
-    width: 351,
-    height: 57,
-    top: 814,
-    left: 92,
+    top: 700,
+    left: 50,
     backgroundColor: COLORS.Orange,
     borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', // Căn giữa theo chiều dọc
+    alignItems: 'center', // Căn giữa theo chiều ngang
   },
-  textWrapper: {
-    position: 'absolute',
-    top: 769,
-    left: 257,
+  TextButton: {
+    fontFamily: FONTFAMILY.poppins_medium,
     fontSize: 20,
+    fontWeight: 500,
+    letterSpacing: 0,
+    lineHeight: 30,
+    position: 'absolute',
     color: COLORS.White,
-  },
-  textWrapper2: {
-    position: 'absolute',
-    top: 712,
-    left: 235,
-    fontSize: 20,
-    color: '#fff',
-  },
-  textWrapper3: {
-    position: 'absolute',
-    top: 830,
-    left: 230,
-    fontSize: 20,
-    color: '#fff',
-  },
-  rectangle6: {
-    position: 'absolute',
-    width: 123,
-    height: 1,
-    top: 783,
-    left: 128,
-    backgroundColor: '#ffffff5e',
-  },
-  rectangle7: {
-    position: 'absolute',
-    width: 123,
-    height: 1,
-    top: 783,
-    left: 283,
-    backgroundColor: '#ffffff5e',
-  },
-  textSignInUp: {
-    fontSize: 20,
-    color: COLORS.White,
-
-    fontFamily: FONTFAMILY.BebasNeue,
+    textShadowOffset: {width: 0, height: 0}, // Vị trí bóng
+    textShadowRadius: 500, // Độ mờ của bóng
   },
   logo: {
     width: 300,
     height: 300,
     position: 'absolute',
     top: 300,
-    left: 47,
+    left: 50,
   },
 });
 

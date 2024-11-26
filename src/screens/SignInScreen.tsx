@@ -8,11 +8,12 @@ import {
   TextInput,
   Alert,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 import {COLORS, FONTFAMILY, SPACING} from '../themes/theme';
 import {NavigationProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
+const SignInScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const handleSignIn = async () => {
@@ -50,19 +51,13 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
     <View style={styles.container}>
       <View style={styles.overlapWrapper}>
         <View style={styles.overlap}>
-          {/* Ellipses */}
-          <View style={[styles.ellipse, {top: 774, left: 15}]} />
-          <View style={[styles.div, {top: 0, left: 371}]} />
-          <View style={[styles.ellipse, {top: 774, left: 310}]} />
-          <View style={[styles.ellipse, {top: 778, left: 0}]} />
-
           {/* Images */}
           <Image
             style={[styles.image, {top: 67, left: 71}]}
             source={require('../assets/image/image-6.png')}
           />
           <Image
-            style={[styles.img, {top: 107, left: 154}]}
+            style={[styles.image1, {top: 107, left: 154}]}
             source={require('../assets/image/image-7.png')}
           />
           <Image
@@ -130,43 +125,40 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
               style={styles.logo}
               source={require('../assets/image/logo.png')} // Replace with your logo path
             />
-          </View>
-          <View style={styles.containerInput}>
-            <TextInput
-              style={styles.input}
-              placeholder="E-mail"
-              placeholderTextColor="#7F7F7F"
-              value={username}
-              onChangeText={setUsername}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#7F7F7F"
-              /*
-               * Change secureTextEntry to true to hide the password
-               * Change secureTextEntry to false to show the password
-               */
-              secureTextEntry={false}
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Sign In"
-                color={COLORS.Orange}
-                onPress={handleSignIn}
+            <View style={styles.containerInput}>
+              <TextInput
+                style={styles.input}
+                placeholder="E-mail"
+                placeholderTextColor="#7F7F7F"
+                value={username}
+                onChangeText={setUsername}
               />
-            </View>
-            <View>
-              <Text
-                style={{
-                  color: COLORS.White,
-                  fontFamily: FONTFAMILY.BebasNeue,
-                  fontSize: 13,
-                }}>
-                Don't have an account?
-              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#7F7F7F"
+                /*
+                 * Change secureTextEntry to true to hide the password
+                 * Change secureTextEntry to false to show the password
+                 */
+                secureTextEntry={false}
+                value={password}
+                onChangeText={text => setPassword(text)}
+              />
+              <TouchableOpacity
+                style={styles.SignUpView}
+                onPress={handleSignIn}>
+                <Text style={styles.TextButton}>SIGN UP</Text>
+              </TouchableOpacity>
+
+              <View style={styles.Footer}>
+                <Text style={styles.TextButton}> Havn't an account ? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                  <Text style={[styles.TextButton, {color: COLORS.Orange}]}>
+                    SIGN UP
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
@@ -199,27 +191,13 @@ const styles = StyleSheet.create({
     left: -71,
     backgroundColor: '#0e0e0e',
   },
-  ellipse: {
-    position: 'absolute',
-    width: 186,
-    height: 186,
-    borderRadius: 93,
-    filter: 'blur(300px)',
-  },
-  div: {
-    position: 'absolute',
-    width: 186,
-    height: 186,
-    borderRadius: 93,
-    filter: 'blur(300px)',
-  },
   image: {
     width: 77,
     height: 139,
     position: 'absolute',
     resizeMode: 'cover',
   },
-  img: {
+  image1: {
     width: 110,
     height: 157,
     position: 'absolute',
@@ -312,70 +290,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(1, 1, 1, 0.9)',
     borderRadius: 13,
   },
-  rectangle2: {
-    position: 'absolute',
-    width: 351,
-    height: 57,
-    top: 696,
-    left: 92,
-    backgroundColor: COLORS.Orange,
-    borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rectangle3: {
-    position: 'absolute',
-    width: 351,
-    height: 57,
-    top: 814,
-    left: 92,
-    backgroundColor: COLORS.Orange,
-    borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textWrapper: {
-    position: 'absolute',
-    top: 769,
-    left: 257,
-    fontSize: 20,
-    color: COLORS.White,
-  },
-  textWrapper2: {
-    position: 'absolute',
-    top: 712,
-    left: 235,
-    fontSize: 20,
-    color: '#fff',
-  },
-  textWrapper3: {
-    position: 'absolute',
-    top: 830,
-    left: 230,
-    fontSize: 20,
-    color: '#fff',
-  },
-  rectangle6: {
-    position: 'absolute',
-    width: 123,
-    height: 1,
-    top: 783,
-    left: 128,
-    backgroundColor: '#ffffff5e',
-  },
-  rectangle7: {
-    position: 'absolute',
-    width: 123,
-    height: 1,
-    top: 783,
-    left: 283,
-    backgroundColor: '#ffffff5e',
-  },
   textSignInUp: {
     fontSize: 20,
     color: COLORS.White,
 
-    fontFamily: FONTFAMILY.BebasNeue,
+    fontFamily: FONTFAMILY.poppins_medium,
   },
   logo: {
     width: 300,
@@ -385,7 +304,7 @@ const styles = StyleSheet.create({
     left: 47,
   },
   containerInput: {
-    top: 650,
+    top: 600,
     alignItems: 'center',
   },
   input: {
@@ -396,12 +315,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#333333',
     color: '#CCCCCC',
   },
-  buttonContainer: {
+
+  SignUpView: {
     width: 256,
+    padding: 12,
     marginVertical: 8,
     borderRadius: 8,
-    overflow: 'hidden',
+    backgroundColor: COLORS.Orange,
+    alignItems: 'center',
+  },
+  TextButton: {
+    color: COLORS.White,
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: 12,
+  },
+  Footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
   },
 });
 
-export default SignInSignUp;
+export default SignInScreen;
