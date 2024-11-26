@@ -1,0 +1,44 @@
+{
+    "accounts" : [
+  {
+    "id": 1,
+    "username": "trantrunghieu",
+    "password": "123abcC@",
+    "avatar": "https://randomuser.me/api/portraits/men/1.jpg",
+    "fullName": "Trần Trung Hiếu",
+    "phoneNumber": "0334979723",
+    "email": "trantrunghieu.mail@gmail.com",
+    "gender": "male"
+  },
+  {
+    "id": 2,
+    "username": "danglekhanh",
+    "password": "123abcC@",
+    "avatar": "https://randomuser.me/api/portraits/women/2.jpg",
+    "fullName": "Jane Doe",
+    "phoneNumber": "987-654-3210",
+    "email": "janedoe@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 3,
+    "username": "tranthanhtin",
+    "password": "securepass",
+    "avatar": "https://randomuser.me/api/portraits/men/3.jpg",
+    "fullName": "Alex Smith",
+    "phoneNumber": "555-666-7777",
+    "email": "alexsmith@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 4,
+    "username": "tuemy",
+    "password": "mypassword",
+    "avatar": "https://randomuser.me/api/portraits/women/4.jpg",
+    "fullName": "Lisa Brown",
+    "phoneNumber": "444-555-6666",
+    "email": "lisabrown@example.com",
+    "gender": "female"
+  }
+]
+}

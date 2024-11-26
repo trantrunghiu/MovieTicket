@@ -17,14 +17,14 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
   const [password, setPassword] = useState('');
   const handleSignIn = async () => {
     try {
-      const response = await fetch(
-        'https://67239bab493fac3cf24ba02d.mockapi.io/api/accounts',
-      );
+      /*
+       * Call the API to get the list of users
+       * Replace the URL with your API URL
+       * Replace the response.json() with the actual response format
+       * 192.168.42.104 is my local IP address, replace it with your local IP address
+       */
+      const response = await fetch('http://192.168.42.104:3001/accounts');
       const users = await response.json();
-
-      console.log('Users from API:', users); // In toàn bộ danh sách người dùng từ API
-      console.log('Input Username:', username); // Tên người dùng nhập vào
-      console.log('Input Password:', password); // Mật khẩu nhập vào
 
       // Kiểm tra thông tin đăng nhập
       const user = users.find(

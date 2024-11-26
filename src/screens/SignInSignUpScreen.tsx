@@ -27,7 +27,7 @@ const SignInSignUp = ({navigation}: {navigation: NavigationProp<any>}) => {
             source={require('../assets/image/image-6.png')}
           />
           <Image
-            style={[styles.img, {top: 107, left: 154}]}
+            style={[styles.image1, {top: 107, left: 154}]}
             source={require('../assets/image/image-7.png')}
           />
           <Image
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     resizeMode: 'cover',
   },
-  img: {
+  image1: {
     width: 110,
     height: 157,
     position: 'absolute',
