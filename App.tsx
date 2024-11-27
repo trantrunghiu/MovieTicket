@@ -8,7 +8,7 @@ import TicketScreen from './src/screens/TicketScreen';
 import SignInSignUpScreen from './src/screens/SignInSignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
-import OnBoarding from './src/screens/OnBoarding';
+import OnBoardingScreen from './src/screens/OnBoardingScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="OnBoarding"
-          component={OnBoarding}
+          component={OnBoardingScreen}
           options={{animation: 'fade'}}
         />
         <Stack.Screen
