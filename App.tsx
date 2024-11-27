@@ -9,56 +9,59 @@ import SignInSignUpScreen from './src/screens/SignInSignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import OnBoardingScreen from './src/screens/OnBoardingScreen';
+import {UserProvider} from './src/context/UserContext';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="OnBoarding"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen
-          name="OnBoarding"
-          component={OnBoardingScreen}
-          options={{animation: 'fade'}}
-        />
-        <Stack.Screen
-          name="SignInSignUp"
-          component={SignInSignUpScreen}
-          options={{animation: 'fade'}}
-        />
-        <Stack.Screen
-          name="Tab"
-          component={TabNavigator}
-          options={{animation: 'default'}}
-        />
-        <Stack.Screen
-          name="MovieDetails"
-          component={MovieDetailsScreen}
-          options={{animation: 'slide_from_right'}}
-        />
-        <Stack.Screen
-          name="SeatBooking"
-          component={SeatBookingScreen}
-          options={{animation: 'slide_from_bottom'}}
-        />
-        <Stack.Screen
-          name="Ticket"
-          component={TicketScreen}
-          options={{animation: 'slide_from_bottom'}}
-        />
-        <Stack.Screen
-          name="SignIn"
-          component={SignInScreen}
-          options={{animation: 'slide_from_right'}}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUpScreen}
-          options={{animation: 'slide_from_right'}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="OnBoarding"
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen
+            name="OnBoarding"
+            component={OnBoardingScreen}
+            options={{animation: 'fade'}}
+          />
+          <Stack.Screen
+            name="SignInSignUp"
+            component={SignInSignUpScreen}
+            options={{animation: 'fade'}}
+          />
+          <Stack.Screen
+            name="Tab"
+            component={TabNavigator}
+            options={{animation: 'default'}}
+          />
+          <Stack.Screen
+            name="MovieDetails"
+            component={MovieDetailsScreen}
+            options={{animation: 'slide_from_right'}}
+          />
+          <Stack.Screen
+            name="SeatBooking"
+            component={SeatBookingScreen}
+            options={{animation: 'slide_from_bottom'}}
+          />
+          <Stack.Screen
+            name="Ticket"
+            component={TicketScreen}
+            options={{animation: 'slide_from_bottom'}}
+          />
+          <Stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{animation: 'slide_from_right'}}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{animation: 'slide_from_right'}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 };
 

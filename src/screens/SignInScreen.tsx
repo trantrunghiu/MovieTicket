@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
+import {UserContext} from '../context/UserContext';
 const SignInScreen = ({
   navigation,
   route,
@@ -28,6 +28,11 @@ const SignInScreen = ({
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const userContext = useContext(UserContext); // Lấy userContext từ Context
+  if (!userContext) {
+    throw new Error('UserContext is null');
+  }
+  const {setUser} = userContext;
   // Hàm đăng nhập
 
   // Hàm đăng nhập
@@ -63,8 +68,11 @@ const SignInScreen = ({
       }
 
       // Đăng nhập Firebase bằng email và password
-      await auth().signInWithEmailAndPassword(emailToUse, password);
-
+      const userCredential = await auth().signInWithEmailAndPassword(
+        emailToUse,
+        password,
+      );
+      setUser(userCredential.user);
       Alert.alert('Được rồi đi thôi', 'Đăng nhập thành công!', [
         {text: 'OK', onPress: () => navigation.navigate('Tab')}, // Chuyển đến trang tab khi đăng nhập thành công
       ]);

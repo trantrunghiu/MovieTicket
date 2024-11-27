@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -20,8 +20,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-
+import {UserContext} from '../context/UserContext';
 // Cấu hình Google Sign-In
 GoogleSignin.configure({
   webClientId:
@@ -38,7 +37,11 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
   const [email, setEmail] = useState('');
   const dropdownRef = useRef<SelectDropdown>(null);
   const [isLoading, setIsLoading] = useState(false); // State cho màn hình loading
-
+  const userContext = useContext(UserContext); // Lấy userContext từ Context
+  if (!userContext) {
+    throw new Error('UserContext is null');
+  }
+  const {setUser} = userContext;
   // Hàm đăng ký Firebase
   const handleSignUp = async () => {
     if (!/^[a-zA-Z0-9]{3,16}$/.test(username)) {
@@ -171,7 +174,8 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
           avatar: photo || 'https://i.imgur.com/zD994Xh.png', // Lấy ảnh đại diện từ Google hoặc ảnh mặc định
           createdAt: firestore.FieldValue.serverTimestamp(),
         });
-
+        // Lưu thông tin người dùng vào Context
+        setUser(userCredential.user);
         Alert.alert(
           'Được rồi đi thôi',
           'Đăng ký thành công, tiến hành đăng nhập thành công!',
