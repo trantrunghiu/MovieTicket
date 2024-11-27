@@ -7,14 +7,27 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
-  ActivityIndicator, // Import spinner loading
-  TouchableWithoutFeedback, // Ngăn không cho người dùng tương tác
+  ActivityIndicator,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {COLORS, FONTFAMILY} from '../themes/theme';
 import {NavigationProp} from '@react-navigation/native';
 import SelectDropdown from 'react-native-select-dropdown';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+// Cấu hình Google Sign-In
+GoogleSignin.configure({
+  webClientId:
+    '1000406782901-pauplpqt30uf9nuerr6qt5snl1egvj1d.apps.googleusercontent.com', // Lấy từ Firebase Console
+  offlineAccess: false,
+});
 
 const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
   const [username, setUsername] = useState('');
@@ -25,8 +38,9 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
   const [email, setEmail] = useState('');
   const dropdownRef = useRef<SelectDropdown>(null);
   const [isLoading, setIsLoading] = useState(false); // State cho màn hình loading
+
+  // Hàm đăng ký Firebase
   const handleSignUp = async () => {
-    // Kiểm tra dữ liệu
     if (!/^[a-zA-Z0-9]{3,16}$/.test(username)) {
       Alert.alert(
         'Error',
@@ -59,19 +73,17 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
       Alert.alert('Error', 'Email không hợp lệ.');
       return;
     }
-    // Bắt đầu quá trình đăng ký và hiển thị loading
-    setIsLoading(true);
+
+    setIsLoading(true); // Hiển thị loading khi bắt đầu đăng ký
 
     const defaultAvatarUrl = 'https://i.imgur.com/zD994Xh.png';
-    // Đăng ký bằng Firebase
+
     try {
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
       const user = userCredential.user;
-
-      console.log('Firebase User Created:', user);
 
       // Lưu thông tin bổ sung vào Firestore
       await firestore().collection('users').doc(user.uid).set({
@@ -84,8 +96,11 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
-      Alert.alert('Success', 'Đăng ký thành công!', [
-        {text: 'OK', onPress: () => navigation.navigate('SignIn')},
+      Alert.alert('Được rồi đi thôi', 'Đăng ký thành công!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('SignIn', {username, password}),
+        },
       ]);
 
       // Reset form sau khi đăng ký thành công
@@ -108,22 +123,115 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
       }
       Alert.alert('Error', errorMessage);
     } finally {
-      // Sau khi hoàn tất, ẩn loading
-      setIsLoading(false);
+      setIsLoading(false); // Ẩn loading khi hoàn tất
+    }
+  };
+
+  // Hàm đăng nhập bằng Google
+
+  const handleGoogleSignUp = async () => {
+    try {
+      // Kiểm tra dịch vụ Google Play trên thiết bị
+      await GoogleSignin.hasPlayServices();
+
+      // Đăng nhập với Google và lấy thông tin người dùng
+      const userInfo = await GoogleSignin.signIn();
+
+      // Kiểm tra đối tượng user trước khi truy cập các thuộc tính
+      const user = userInfo?.data?.user; // Sửa ở đây để truy cập đúng đối tượng `user`
+      if (!user) {
+        throw new Error('Không có thông tin người dùng.');
+      }
+
+      const {id, email, name, photo} = user;
+
+      // Đăng nhập với Firebase Authentication bằng Google
+      const credential = auth.GoogleAuthProvider.credential(
+        userInfo?.data?.idToken ?? null,
+      );
+
+      setIsLoading(true); // Hiển thị màn hình loading khi bắt đầu đăng ký
+
+      // Đăng nhập hoặc đăng ký người dùng mới vào Firebase
+      const userCredential = await auth().signInWithCredential(credential);
+      const firebaseUser = userCredential.user;
+
+      // Kiểm tra nếu người dùng đã có trong Firestore chưa
+      const userRef = firestore().collection('users').doc(firebaseUser.uid);
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        // Nếu người dùng chưa có, tạo tài khoản mới và lưu thông tin vào Firestore
+        await userRef.set({
+          username: name || 'User' + firebaseUser.uid, // Tạo username mặc định
+          fullname: name || 'Unknown', // Lấy tên hiển thị từ Google
+          email: email,
+          phonenumber: '', // Có thể yêu cầu người dùng nhập số điện thoại sau
+          gender: 'Other', // Mặc định là 'Other'
+          avatar: photo || 'https://i.imgur.com/zD994Xh.png', // Lấy ảnh đại diện từ Google hoặc ảnh mặc định
+          createdAt: firestore.FieldValue.serverTimestamp(),
+        });
+
+        Alert.alert(
+          'Được rồi đi thôi',
+          'Đăng ký thành công, tiến hành đăng nhập thành công!',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Tab'),
+            },
+          ],
+        );
+      } else {
+        // Nếu người dùng đã có tài khoản trong Firestore, chỉ cần hiển thị thông báo đăng nhập thành công
+        Alert.alert(
+          'Được rồi đi thôi',
+          'Đã có tài khoản, đăng nhập thành công!',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Tab'),
+            },
+          ],
+        );
+      }
+    } catch (error) {
+      console.error('Google SignIn Error:', error);
+
+      // Kiểm tra lỗi và hiển thị thông báo
+      if (error && (error as any).code) {
+        if ((error as any).code === statusCodes.SIGN_IN_CANCELLED) {
+          Alert.alert('Lỗi', 'Đăng nhập bị hủy.');
+        } else if ((error as any).code === statusCodes.IN_PROGRESS) {
+          Alert.alert('Lỗi', 'Đăng nhập đang được xử lý.');
+        } else if (
+          (error as any).code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+        ) {
+          Alert.alert(
+            'Lỗi',
+            'Dịch vụ Google Play không khả dụng trên thiết bị này.',
+          );
+        } else {
+          Alert.alert('Lỗi', 'Có lỗi xảy ra. Vui lòng thử lại.');
+        }
+      } else {
+        // Nếu không có thuộc tính 'code', xử lý lỗi chung
+        Alert.alert('Lỗi', 'Có lỗi không xác định xảy ra. Vui lòng thử lại.');
+      }
+    } finally {
+      setIsLoading(false); // Ẩn loading khi hoàn tất
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Lớp phủ (overlay) khi loading */}
       {isLoading && (
-        <View style={styles.overlay}>
+        <View style={styles.overlay} pointerEvents="auto">
           <ActivityIndicator size="large" color={COLORS.Orange} />
         </View>
       )}
       <View style={styles.overlapWrapper}>
         <View style={styles.overlap}>
-          {/* Logo */}
           <Image
             style={styles.logo}
             source={require('../assets/image/logo.png')}
@@ -182,8 +290,6 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
               value={email}
               onChangeText={setEmail}
             />
-            {/* Hiển thị spinner loading */}
-            {/* Ngừng thao tác nếu đang đăng ký */}
             {!isLoading && (
               <TouchableOpacity
                 style={styles.SignUpView}
@@ -191,6 +297,19 @@ const SignUpScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
                 <Text style={styles.TextButton}>SIGN UP</Text>
               </TouchableOpacity>
             )}
+            {/* Nút đăng ký với Google */}
+            <TouchableOpacity
+              style={{
+                ...styles.SignUpView,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={handleGoogleSignUp}>
+              <Text style={styles.TextButton}>OR LOGIN BY </Text>
+              <MaterialCommunityIcons name="google" size={30} color="white" />
+            </TouchableOpacity>
+            {/* Footer */}
             <View style={styles.Footer}>
               <Text style={styles.TextButton}>You have an account ? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
@@ -245,10 +364,18 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 8,
     backgroundColor: '#333333',
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   dropdownButtonText: {
     color: '#CCCCCC',
+  },
+  dropdownItem: {
+    padding: 6,
+    backgroundColor: '#333333',
+  },
+  dropdownItemText: {
+    color: '#CCCCCC',
+    fontSize: 16,
   },
   SignUpView: {
     width: '100%',
@@ -261,30 +388,20 @@ const styles = StyleSheet.create({
   TextButton: {
     color: COLORS.White,
     fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: 16,
   },
   Footer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  dropdownItem: {
-    backgroundColor: '#333333',
-    padding: 2,
-  },
-  dropdownItemText: {
-    color: '#CCCCCC',
+    marginTop: 10,
   },
   overlay: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Chế độ mờ đen
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Lớp phủ mờ đen
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 9999, // Đảm bảo overlay nằm trên cùng
+    zIndex: 1000, // Đảm bảo lớp overlay nằm trên cùng
   },
 });
 

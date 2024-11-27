@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,46 +9,89 @@ import {
   Alert,
   Keyboard,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {COLORS, FONTFAMILY, SPACING} from '../themes/theme';
 import {NavigationProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-const SignInScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+const SignInScreen = ({
+  navigation,
+  route,
+}: {
+  navigation: NavigationProp<any>;
+  route: any;
+}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const handleSignIn = async () => {
-    try {
-      /*
-       * Call the API to get the list of users
-       * Replace the URL with your API URL
-       * Replace the response.json() with the actual response format
-       * 192.168.42.104 is my local IP address, replace it with your local IP address
-       */
-      const response = await fetch('http://192.168.42.104:3001/accounts');
-      const users = await response.json();
+  const [isLoading, setIsLoading] = useState(false);
+  // Hàm đăng nhập
 
-      // Kiểm tra thông tin đăng nhập
-      const user = users.find(
-        (user: {username: string; password: string}) =>
-          user.username === username && user.password === password,
-      );
-      if (user) {
-        Alert.alert('Success', 'Login successful!', [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('Tab'),
-          },
-        ]);
-      } else {
-        Alert.alert('Error', 'Invalid username or password.');
+  // Hàm đăng nhập
+  const handleSignIn = async () => {
+    if (!username || !password) {
+      Alert.alert('Lỗi', 'Không được bỏ trống tài khoản hoặc mật khẩu.');
+      return;
+    }
+
+    setIsLoading(true); // Hiển thị loading khi bắt đầu đăng nhập
+
+    try {
+      // Kiểm tra xem username có phải là email không
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
+
+      let emailToUse = username;
+      if (!isEmail) {
+        // Nếu username không phải là email, tìm email tương ứng trong Firestore
+        const userSnapshot = await firestore()
+          .collection('users')
+          .where('username', '==', username)
+          .get();
+
+        if (userSnapshot.empty) {
+          Alert.alert('Lỗi', 'Chưa có tài khoản trên hệ thống, hãy đăng ký.');
+          setIsLoading(false);
+          return;
+        }
+
+        // Nếu tìm thấy, lấy email từ Firestore
+        const userDoc = userSnapshot.docs[0];
+        emailToUse = userDoc.data().email;
       }
+
+      // Đăng nhập Firebase bằng email và password
+      await auth().signInWithEmailAndPassword(emailToUse, password);
+
+      Alert.alert('Được rồi đi thôi', 'Đăng nhập thành công!', [
+        {text: 'OK', onPress: () => navigation.navigate('Tab')}, // Chuyển đến trang tab khi đăng nhập thành công
+      ]);
     } catch (error) {
-      console.error('Error fetching users:', error);
-      Alert.alert('Error', 'An error occurred while trying to sign in.');
+      let errorMessage = 'Đăng nhập thất bại. Vui lòng thử lại sau.';
+      Alert.alert('Error', errorMessage);
+    } finally {
+      setIsLoading(false); // Ẩn màn hình loading khi hoàn tất
     }
   };
+
+  useEffect(() => {
+    // Lấy dữ liệu từ params nếu có
+    if (route.params) {
+      const {username: passedUsername, password: passedPassword} = route.params;
+      setUsername(passedUsername || '');
+      setPassword(passedPassword || '');
+    }
+  }, [route.params]);
   return (
     <View style={styles.container}>
+      {/* Màn hình loading */}
+      {isLoading && (
+        <View style={styles.overlay} pointerEvents="auto">
+          <ActivityIndicator size="large" color={COLORS.Orange} />
+        </View>
+      )}
       <View style={styles.overlapWrapper}>
         <View style={styles.overlap}>
           {/* Images */}
@@ -128,7 +171,7 @@ const SignInScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
             <View style={styles.containerInput}>
               <TextInput
                 style={styles.input}
-                placeholder="E-mail"
+                placeholder="E-mail or Username"
                 placeholderTextColor="#7F7F7F"
                 value={username}
                 onChangeText={setUsername}
@@ -334,6 +377,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+  },
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Lớp phủ mờ đen
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000, // Đảm bảo lớp overlay nằm trên cùng
   },
 });
 
