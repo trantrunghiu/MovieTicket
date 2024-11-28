@@ -80,4 +80,6 @@ To learn more about React Native, take a look at the following resources:
 
 # About my UI/UX Design
 
+![Preview](./preview.png)
+
 Check out the design on Figma: [Movie Ticket App](https://www.figma.com/file/eHDxuTUp9Q1YikGqA10iiX/Movie-Ticket-App?node-id=0-1)
