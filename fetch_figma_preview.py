@@ -32,6 +32,6 @@ if response.status_code == 200:
         if not os.path.exists("figma_images"):
             os.makedirs("figma_images")
         for node_id, image_url in images_data["images"].items():# Kiểm tra xem URL ảnh có hợp lệ không
-         image_filename = "figma_images/figma_image.png"
+         image_filename = "preview.png"
     urllib.request.urlretrieve(image_url, image_filename)
     
