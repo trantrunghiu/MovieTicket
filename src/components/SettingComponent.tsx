@@ -1,22 +1,22 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/theme';
 import CustomIcon from './CustomIcon';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const SettingComponent = (props: any) => {
   return (
     <View style={styles.container}>
       <View>
-        <CustomIcon name={props.icon} style={styles.iconStyle} />
+        <AntDesign name={props.icon} style={styles.iconStyle} />
       </View>
       <View style={styles.settingContainer}>
         <Text style={styles.title}>{props.heading}</Text>
         <Text style={styles.subtitle}>{props.subheading}</Text>
         <Text style={styles.subtitle}>{props.subtitle}</Text>
       </View>
-      <View style={styles.iconBG}>
+      <TouchableOpacity style={styles.iconBG} onPress={props.onPress}>
         <CustomIcon name={'arrow-right'} style={styles.iconStyle} />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

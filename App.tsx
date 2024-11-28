@@ -9,7 +9,9 @@ import SignInSignUpScreen from './src/screens/SignInSignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import OnBoardingScreen from './src/screens/OnBoardingScreen';
+import ChatWithAIScreen from './src/screens/ChatWithAIScreen';
 import {UserProvider} from './src/context/UserContext';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -57,6 +59,11 @@ const App = () => {
           <Stack.Screen
             name="SignUp"
             component={SignUpScreen}
+            options={{animation: 'slide_from_right'}}
+          />
+          <Stack.Screen
+            name="ChatWithAI"
+            component={ChatWithAIScreen}
             options={{animation: 'slide_from_right'}}
           />
         </Stack.Navigator>

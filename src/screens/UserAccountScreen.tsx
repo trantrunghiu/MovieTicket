@@ -73,10 +73,11 @@ const UserAccountScreen = ({navigation}: any) => {
           subtitle="Permissions"
         />
         <SettingComponent
-          icon="dollar"
+          icon="gitlab"
           heading="Offers & Referrals"
           subheading="Offer"
           subtitle="Referrals"
+          onPress={() => navigation.navigate('ChatWithAI')}
         />
         <SettingComponent
           icon="info"
