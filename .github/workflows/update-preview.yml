@@ -22,14 +22,16 @@ jobs:
       run: pip install requests
 
     - name: Fetch Figma Preview
-      env:
-        FIGMA_API_TOKEN: ${{ secrets.FIGMA_API_TOKEN }}
       run: python fetch_figma_preview.py
 
-    - name: Commit and push changes
+    - name: Set up Git credentials
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
+    - name: Commit and push changes
+      run: |
         git add preview.png
         git commit -m "Update Figma preview"
-        git push
+        git push origin main
