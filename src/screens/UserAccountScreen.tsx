@@ -14,7 +14,6 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import removeAccents from 'remove-accents';
 import {UserContext} from '../context/UserContext';
-
 const UserAccountScreen = ({navigation}: any) => {
   const userContext = useContext(UserContext); // Truy cập thông tin người dùng từ Context
   const user = userContext?.user;
@@ -74,7 +73,7 @@ const UserAccountScreen = ({navigation}: any) => {
         />
         <SettingComponent
           icon="gitlab"
-          heading="Offers & Referrals"
+          heading="Chat with AI"
           subheading="Offer"
           subtitle="Referrals"
           onPress={() => navigation.navigate('ChatWithAI')}
