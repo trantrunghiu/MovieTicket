@@ -78,6 +78,7 @@ To learn more about React Native, take a look at the following resources:
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 
-# Abount my UI/UX Design
+# About my UI/UX Design
+![Figma Design](https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/file/eHDxuTUp9Q1YikGqA10iiX/Movie-Ticket-App?node-id=0-1)
 
-[Figma](https://www.figma.com/design/eHDxuTUp9Q1YikGqA10iiX/Movie-Ticket-App?node-id=0-1&t=KQmXH7ENYAGnk9Df-1)
+Check out the design on Figma: [Movie Ticket App](https://www.figma.com/file/eHDxuTUp9Q1YikGqA10iiX/Movie-Ticket-App?node-id=0-1)
