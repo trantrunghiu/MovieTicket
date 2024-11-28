@@ -31,6 +31,8 @@ if response.status_code == 200:
         if "id" in node:
             node_ids.append(node["id"])
 
+    print("Node IDs found:", node_ids)  # In ra danh sách node IDs
+
     # Lấy ảnh cho tất cả các node
     images_url = f"https://api.figma.com/v1/images/{FILE_KEY}?ids={','.join(node_ids)}&format=png"
 
@@ -40,16 +42,20 @@ if response.status_code == 200:
     if image_response.status_code == 200:
         images_data = image_response.json()
         
-        # Tạo thư mục để lưu ảnh nếu chưa có
-        if not os.path.exists("figma_images"):
-            os.makedirs("figma_images")
+        # Kiểm tra xem API có trả về ảnh cho các node không
+        if "images" not in images_data:
+            print("Không có hình ảnh nào được trả về từ API.")
+        else:
+            # Tạo thư mục để lưu ảnh nếu chưa có
+            if not os.path.exists("figma_images"):
+                os.makedirs("figma_images")
 
-        # Lưu ảnh từ mỗi node
-        for node_id, image_url in images_data["images"].items():
-            image_data = requests.get(image_url).content
-            with open(f"figma_images/{node_id}.png", "wb") as image_file:
-                image_file.write(image_data)
-            print(f"Đã lưu ảnh cho node {node_id}")
+            # Lưu ảnh từ mỗi node
+            for node_id, image_url in images_data["images"].items():
+                image_data = requests.get(image_url).content
+                with open(f"figma_images/{node_id}.png", "wb") as image_file:
+                    image_file.write(image_data)
+                print(f"Đã lưu ảnh cho node {node_id}")
     else:
         print("Lỗi khi tải ảnh từ API:", image_response.json())
 else:
