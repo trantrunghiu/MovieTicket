@@ -2,7 +2,7 @@ import requests
 import os
 import urllib.request
 # Figma API token
-FIGMA_API_TOKEN = os.getenv("FIGMA_API_TOKEN")
+FIGMA_API_TOKEN = "figd_854YuO8EI6LG5t7IjTb-jEdxnxI4D0C9sRQ7OW-c"
 # File Key của dự án
 FILE_KEY = "eHDxuTUp9Q1YikGqA10iiX"
 # URL API để lấy tất cả các node trong file
